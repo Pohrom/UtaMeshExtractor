@@ -20,9 +20,16 @@ def process(chunk):
                 f = open("./%s/mesh-%d.obj" % (datafileName,i),'wb')
                 for block in submesh.blocks:
                     f.write("v %f %f %f\r\n" % (block.v1._pfp__value,block.v2._pfp__value,block.v3._pfp__value))
-                f.write("g submesh_0\r\n")
+                for block in submesh.blocks:
+                    f.write("vt %f %f\r\n" % (block.vt2._pfp__value,block.vt3._pfp__value))
+                for block in submesh.blocks:
+                    f.write("vn %f %f %f\r\n" % (block.vn1._pfp__value,block.vn2._pfp__value,block.vn3._pfp__value))
+                f.write("g submesh_%d\r\n" % i)
                 for face in submesh.faces:
-                    f.write("f %d %d %d\r\n" % (face.i1._pfp__value + 1,face.i2._pfp__value + 1,face.i3._pfp__value + 1))                  
+                    indice1 = face.i1._pfp__value + 1
+                    indice2 = face.i2._pfp__value + 1
+                    indice3 = face.i3._pfp__value + 1
+                    f.write("f %d/%d/%d %d/%d/%d %d/%d/%d\r\n" % (indice1,indice1,indice1,indice2,indice2,indice2,indice3,indice3,indice3))                  
                 f.close()
     elif chunk.tag == 'Texture ':
         print 'extract  : Texture'
