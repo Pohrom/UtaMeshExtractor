@@ -6,6 +6,9 @@
 // Revision:
 // Purpose:
 //--------------------------------------
+
+// 3E 3F : signal of float
+
 typedef struct {
     char    name1[32];
     char    name2[32];
@@ -62,7 +65,6 @@ typedef struct {
 
 
 typedef struct {
-
     local int64 baseAddress = FTell();
     uint32  count;
     uint32  textureOffset[count];
@@ -75,12 +77,50 @@ typedef struct {
 } TEXTURES;
 
 typedef struct {
+    char    name[24]; // length may be incorrect
+    char    data[172];
+} NODE; // C4h
+
+typedef struct {
+    uint32 node_count;
+    uint32 unknown_length;
+    NODE node[node_count];
+    char    unknown[unknown_length+2];
+} NODES;
+
+typedef struct {
+    char name[32]; // length may be incorrect
+    char data[24];
+} MATERIAL; // 38h
+
+typedef struct {
+    uint32 material_count;
+    MATERIAL material[material_count];
+} MATERIALS;
+
+typedef struct {
+    char data[112];
+} DRAWLISTITEM; // 38h
+
+typedef struct {
+    uint32  drawListItem_count;
+    char    unknown[20];
+    DRAWLISTITEM drawListItem[drawListItem_count];
+} DRAWLISTS;
+
+typedef struct {
     char    tag[8];
     uint32  length;
     if (tag == "Texture ")
         TEXTURES    textures;
     else if (tag == "Mesh    ")
         MESHS meshs;
+    else if (tag == "Node    ")
+        NODES nodes;
+    else if (tag == "Material")
+        MATERIALS materials;
+    else if (tag == "DrawList")
+        DRAWLISTS drawList;
     else
         char    data[length-sizeof(tag)-sizeof(length)];
 } CHUNK <read=readCHUNK>;
