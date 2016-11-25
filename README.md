@@ -3,7 +3,7 @@
 
 ## 运行环境
 * Windows x86_64 / Python27 
-* python-pfp (pip install pfp)
+* python-pfp <= 0.1.14 (pip install pfp)
 
 ## 测试
 * 传颂之物:虚伪的假面 PS3版本 (Texture & Mesh)
@@ -11,6 +11,14 @@
 ## 用法
 拖动 mdl 文件到 extract.bat 或执行 ```python mdlparse.py filename.mdl``` 以获得模型(wavefront obj 格式)  
 拖动生成的 obj 文件到 mesh_viewer.exe 预览模型
+
+### 兼容性
+pfp 当前版本已到0.2.2, API 发生部分变化, 并且存在对 Windows 的兼容问题.  
+如需在 pfp > 0.1.14 下运行请做如下修改:
+```python
+mdl = pfp.parse(data_file=sys.argv[1], template_file="mdl.bt")
+```
+并在 cygwin 环境下配置环境/运行
 
 ## 信息
 ### 贴图
